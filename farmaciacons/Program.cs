@@ -59,4 +59,4 @@ public class ItemFarmacia
     {
         return $"[{codigo}] {nombre} | Q{precio:F2}";
     }
-}
+} 
