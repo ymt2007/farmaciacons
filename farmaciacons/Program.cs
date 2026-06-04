@@ -59,4 +59,68 @@ public class ItemFarmacia
     {
         return $"[{codigo}] {nombre} | Q{precio:F2}";
     }
-} 
+}
+public class Lote
+{
+    private string numeroLote;
+    private DateTime fechaVencimiento;
+    private int cantidad;
+    public string NumeroLote
+    {
+        get { return numeroLote; }
+        set
+        {
+            if (value == null || value == "")
+                throw new ArgumentException("El numero de lote no puede estar vacio.");
+            numeroLote = value;
+        }
+    }
+    public DateTime FechaVencimiento
+    {
+        get { return fechaVencimiento; }
+        set { fechaVencimiento = value; }
+    }
+    public int Cantidad
+    {
+        get { return cantidad; }
+        set
+        {
+            if (value < 0)
+                throw new ArgumentException("La cantidad no puede ser negativa.");
+            cantidad = value;
+        }
+    }
+    public Lote(string numeroLote, DateTime fechaVencimiento, int cantidad)
+    {
+        this.NumeroLote = numeroLote;
+        this.FechaVencimiento = fechaVencimiento;
+        this.Cantidad = cantidad;
+    }
+    public void Descontar(int unidades)
+    {
+        cantidad = cantidad - unidades;
+    }
+    public bool EstaVencido()
+    {
+        if (DateTime.Today >= fechaVencimiento)
+            return true;
+        else
+            return false;
+    }
+    public int DiasParaVencer()
+    {
+        TimeSpan diferencia = fechaVencimiento - DateTime.Today;
+        return (int)diferencia.TotalDays;
+    }
+    public bool EstaProximoAVencer(int dias)
+    {
+        if (DiasParaVencer() > 0 && DiasParaVencer() <= dias)
+            return true;
+        else
+            return false;
+    }
+    public string ObtenerResumen()
+    {
+        return $"Lote: {numeroLote} | Vence: {fechaVencimiento:dd/MM/yyyy} | Cantidad: {cantidad} uds";
+    }
+}
